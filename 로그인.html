@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+        background: linear-gradient(135deg, #4f6df5, #8a5cf6);
+      }
+
+      .로그인카드 {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px 32px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .로그인카드 h1 {
+        text-align: center;
+        font-size: 26px;
+        color: #1f2937;
+        margin-bottom: 8px;
+      }
+
+      .부제목 {
+        text-align: center;
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 28px;
+      }
+
+      .입력그룹 {
+        margin-bottom: 18px;
+      }
+
+      .입력그룹 label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+      }
+
+      .입력그룹 input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 15px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .입력그룹 input:focus {
+        border-color: #4f6df5;
+        box-shadow: 0 0 0 3px rgba(79, 109, 245, 0.2);
+      }
+
+      .옵션줄 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        margin-bottom: 22px;
+      }
+
+      .옵션줄 label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #4b5563;
+        cursor: pointer;
+      }
+
+      .옵션줄 a,
+      .하단문구 a {
+        color: #4f6df5;
+        text-decoration: none;
+      }
+
+      .옵션줄 a:hover,
+      .하단문구 a:hover {
+        text-decoration: underline;
+      }
+
+      .로그인버튼 {
+        width: 100%;
+        padding: 13px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        background: #4f6df5;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .로그인버튼:hover {
+        background: #3b56d9;
+      }
+
+      .오류메시지 {
+        display: none;
+        margin-bottom: 14px;
+        padding: 10px 12px;
+        font-size: 13px;
+        color: #b91c1c;
+        background: #fee2e2;
+        border-radius: 8px;
+      }
+
+      .하단문구 {
+        margin-top: 22px;
+        text-align: center;
+        font-size: 13px;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="로그인카드">
+      <h1>로그인</h1>
+      <p class="부제목">계정 정보를 입력해 주세요.</p>
+
+      <form id="로그인폼" novalidate>
+        <div class="오류메시지" id="오류메시지" role="alert"></div>
+
+        <div class="입력그룹">
+          <label for="아이디">이메일 또는 아이디</label>
+          <input
+            type="text"
+            id="아이디"
+            name="아이디"
+            placeholder="example@email.com"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="입력그룹">
+          <label for="비밀번호">비밀번호</label>
+          <input
+            type="password"
+            id="비밀번호"
+            name="비밀번호"
+            placeholder="비밀번호 입력"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <div class="옵션줄">
+          <label
+            ><input type="checkbox" id="로그인유지" /> 로그인 상태 유지</label
+          >
+          <a href="#">비밀번호 찾기</a>
+        </div>
+
+        <button type="submit" class="로그인버튼">로그인</button>
+      </form>
+
+      <p class="하단문구">계정이 없으신가요? <a href="#">회원가입</a></p>
+    </main>
+
+    <script>
+      const 로그인폼 = document.getElementById("로그인폼");
+      const 오류메시지 = document.getElementById("오류메시지");
+
+      // 오류 문구를 화면에 표시한다
+      function 오류표시(문구) {
+        오류메시지.textContent = 문구;
+        오류메시지.style.display = "block";
+      }
+
+      // 로그인 제출 시 입력값을 검증한다
+      로그인폼.addEventListener("submit", function (이벤트) {
+        이벤트.preventDefault();
+        오류메시지.style.display = "none";
+
+        const 아이디값 = document.getElementById("아이디").value.trim();
+        const 비밀번호값 = document.getElementById("비밀번호").value;
+
+        if (!아이디값) {
+          오류표시("이메일 또는 아이디를 입력해 주세요.");
+          return;
+        }
+        if (비밀번호값.length < 4) {
+          오류표시("비밀번호는 4자 이상 입력해 주세요.");
+          return;
+        }
+
+        // 실제 서버 연동 시 이 위치에서 로그인 요청을 보낸다
+        alert("로그인 요청 완료 (데모 화면)");
+      });
+    </script>
+  </body>
+</html>
